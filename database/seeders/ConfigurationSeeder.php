@@ -16,8 +16,8 @@ class ConfigurationSeeder extends Seeder
         $configs = [
             // General
             ['key' => 'app_name', 'value' => config('app.name'), 'group' => 'general', 'type' => 'text'],
-            ['key' => 'logo_light', 'value' => 'Img/Logo/logo_for_light-06-04-2025172953.webp', 'group' => 'general', 'type' => 'file'],
-            ['key' => 'logo_dark', 'value' => 'Img/Logo/logo_for_dark-06-04-2025172946.webp', 'group' => 'general', 'type' => 'file'],
+            ['key' => 'logo_light', 'value' => 'img/logo/logo_for_dark-06-04-2025232900.webp', 'group' => 'general', 'type' => 'file'],
+            ['key' => 'logo_dark', 'value' => 'img/logo/logo_for_light-06-04-2025232900.webp', 'group' => 'general', 'type' => 'file'],
 
             // Contact
             ['key' => 'address', 'value' => '', 'group' => 'contact', 'type' => 'text'],
