@@ -33,46 +33,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open"
-                        class="flex items-center p-2 w-full rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                        <!-- Ícono para Catastro -->
+                <li>
+                    <a href="{{ route('admin.catastro.index') }}"
+                        class="flex items-center p-2 rounded-md {{ request()->routeIs('admin.catastro.index') ? 'bg-primary/10 text-primary dark:text-primary-light' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                         <i class="fa-solid fa-box-archive w-5 h-5 mr-3"></i>
                         <span>Catastro</span>
-                        <svg class="ml-auto w-4 h-4 transform transition-transform duration-200"
-                            :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Eliminamos el posicionamiento absoluto para que el submenú se expanda en flujo normal -->
-                    <ul x-show="open" @click.away="open = false" x-cloak
-                        class="mt-2 space-y-1 pl-8">
-                        <li>
-                            <a href="registro.catastro.php"
-                                class="flex items-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <!-- Ícono para Registrar Catastro -->
-                                <i class="fa-solid fa-plus w-5 h-5 mr-3"></i>
-                                Registrar Catastro
-                            </a>
-                        </li>
-                        <li>
-                            <a href="listado.catastro.php"
-                                class="flex items-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <!-- Ícono para Lista de Catastro -->
-                                <i class="fa-solid fa-list w-5 h-5 mr-3"></i>
-                                Lista de Catastro
-                            </a>
-                        </li>
-                        <li>
-                            <a href="listado.catastro.php"
-                                class="flex items-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <!-- Ícono para Control de Carpeta Catastro -->
-                                <i class="fa-solid fa-folder w-5 h-5 mr-3"></i>
-                                Control de Carpeta Catastro
-                            </a>
-                        </li>
-                    </ul>
+                    </a>
                 </li>
                 <li>
                     <a href="{{ route('usuarios.index') }}"

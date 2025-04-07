@@ -50,8 +50,6 @@
         @vite('resources/js/views/layouts/adminLayout.js')
 
         @stack('scripts')
-        <script src="//unpkg.com/alpinejs" defer></script>
-
     </body>
 
 </html>
