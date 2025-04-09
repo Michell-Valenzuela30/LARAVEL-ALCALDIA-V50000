@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('direccion', 50)->nullable();
             $table->string('tipo', 50)->nullable();
             $table->string('descripcion', 50)->nullable();
+            $table->string('estado', 50)->nullable(); // Nueva columna 'estado'
             $table->timestamps();
         });
     }

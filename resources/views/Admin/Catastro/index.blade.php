@@ -81,162 +81,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                <td class="px-6 py-4 font-medium">1234</td>
-                                <td class="px-6 py-4">Juan Pérez</td>
-                                <td class="px-6 py-4">V-12345678</td>
-                                <td class="px-6 py-4">Av. Bolívar</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Residencial</span>
-                                </td>
-                                <td class="px-6 py-4">Casa de 2 plantas</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Activo</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex justify-center gap-2">
-                                        <button
-                                            class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 p-2 rounded-lg transition-colors dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
-                                            title="Ver detalles">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-yellow-600 hover:text-yellow-900 bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg transition-colors dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-300"
-                                            title="Editar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 p-2 rounded-lg transition-colors dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-300"
-                                            title="Eliminar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                <td class="px-6 py-4 font-medium">5678</td>
-                                <td class="px-6 py-4">Ana Gómez</td>
-                                <td class="px-6 py-4">J-98765432</td>
-                                <td class="px-6 py-4">Calle Los Pinos</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Comercial</span>
-                                </td>
-                                <td class="px-6 py-4">Local para negocio</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Activo</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex justify-center gap-2">
-                                        <button
-                                            class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 p-2 rounded-lg transition-colors dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
-                                            title="Ver detalles">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-yellow-600 hover:text-yellow-900 bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg transition-colors dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-300"
-                                            title="Editar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 p-2 rounded-lg transition-colors dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-300"
-                                            title="Eliminar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                <td class="px-6 py-4 font-medium">9101</td>
-                                <td class="px-6 py-4">Luis Martínez</td>
-                                <td class="px-6 py-4">V-11223344</td>
-                                <td class="px-6 py-4">Barrio Central</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-amber-900 dark:text-amber-300">Familiar</span>
-                                </td>
-                                <td class="px-6 py-4">Casa unifamiliar</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pendiente</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex justify-center gap-2">
-                                        <button
-                                            class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 p-2 rounded-lg transition-colors dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
-                                            title="Ver detalles">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-yellow-600 hover:text-yellow-900 bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg transition-colors dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-300"
-                                            title="Editar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 p-2 rounded-lg transition-colors dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-300"
-                                            title="Eliminar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach ($catastros as $catastro)
+                                <tr
+                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                    <td class="px-6 py-4 font-medium">{{ $catastro->num_expe }}</td>
+                                    <td class="px-6 py-4">{{ $catastro->nom_ape }}</td>
+                                    <td class="px-6 py-4">{{ $catastro->ced }}</td>
+                                    <td class="px-6 py-4">{{ $catastro->direccion }}</td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-amber-900 dark:text-amber-300">{{ $catastro->tipo }}</span>
+                                    </td>
+                                    <td class="px-6 py-4">{{ $catastro->descripcion }}</td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{{ $catastro->estado }}</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex justify-center gap-2">
+                                            <button
+                                                class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 p-2 rounded-lg transition-colors dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
+                                                title="Ver detalles">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <button
+                                                class="text-yellow-600 hover:text-yellow-900 bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg transition-colors dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-300"
+                                                title="Editar">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <button
+                                                class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 p-2 rounded-lg transition-colors dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-300"
+                                                title="Eliminar">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -313,8 +211,7 @@
                         </button>
                         <button type="submit"
                             class="px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium flex items-center gap-2 shadow-md hover:shadow-lg">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                             Guardar
@@ -330,7 +227,7 @@
         <script src="{{ asset('js/catastro/dataTables.min.js') }}"></script>
         <script src="{{ asset('js/catastro/responsive.dataTables.min.js') }}"></script>
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 // Inicializar DataTable
                 let table = $('#catastroTable').DataTable({
                     responsive: true,
@@ -351,7 +248,7 @@
                         },
                     },
                     dom: '<"flex flex-col md:flex-row justify-between items-start md:items-center mb-3"<"flex-1"l><"mb-2 md:mb-0"f>><"overflow-x-auto"t><"flex flex-col md:flex-row justify-between items-center mt-4"<"text-sm text-gray-700 dark:text-gray-300"i><"flex-1 flex justify-end"p>>',
-                    initComplete: function() {
+                    initComplete: function () {
                         // Personalizar el campo de búsqueda
                         const searchInput = $('.dataTables_filter input');
                         searchInput.addClass(
@@ -365,23 +262,23 @@
                         );
 
                         // Conectar búsqueda personalizada a DataTables
-                        $('#customSearch').on('keyup', function() {
+                        $('#customSearch').on('keyup', function () {
                             table.search(this.value).draw();
                         });
 
                         // Filtros de columnas
-                        $('#typeFilter').on('change', function() {
+                        $('#typeFilter').on('change', function () {
                             table.column(4).search(this.value).draw();
                         });
 
-                        $('#statusFilter').on('change', function() {
+                        $('#statusFilter').on('change', function () {
                             table.column(6).search(this.value).draw();
                         });
 
                         // Aplicar clases a la paginación
                         stylePagination();
                     },
-                    drawCallback: function() {
+                    drawCallback: function () {
                         stylePagination();
                     }
                 });
@@ -410,9 +307,9 @@
                 }
 
                 // Animación para los botones
-                $('.dataTables_wrapper').on('mouseenter', '.paginate_button:not(.disabled)', function() {
+                $('.dataTables_wrapper').on('mouseenter', '.paginate_button:not(.disabled)', function () {
                     $(this).addClass('transform scale-105 transition-transform');
-                }).on('mouseleave', '.paginate_button:not(.disabled)', function() {
+                }).on('mouseleave', '.paginate_button:not(.disabled)', function () {
                     $(this).removeClass('transform scale-105 transition-transform');
                 });
 
@@ -445,18 +342,18 @@
                 });
 
                 // Aplicar efectos de hover a las filas de la tabla
-                $('#catastroTable tbody').on('mouseenter', 'tr', function() {
+                $('#catastroTable tbody').on('mouseenter', 'tr', function () {
                     $(this).addClass('shadow-md');
-                }).on('mouseleave', 'tr', function() {
+                }).on('mouseleave', 'tr', function () {
                     $(this).removeClass('shadow-md');
                 });
 
                 // Tooltips mejorados para los botones de acción
-                $('#catastroTable').on('mouseenter', 'button[title]', function() {
+                $('#catastroTable').on('mouseenter', 'button[title]', function () {
                     const title = $(this).attr('title');
                     const tooltip = $(
                         '<div class="tooltip bg-gray-900 text-white text-xs rounded py-1 px-2 absolute z-10"></div>'
-                        );
+                    );
                     tooltip.text(title);
                     $('body').append(tooltip);
 
@@ -470,18 +367,18 @@
                     });
 
                     $(this).data('tooltip', tooltip);
-                }).on('mouseleave', 'button[title]', function() {
+                }).on('mouseleave', 'button[title]', function () {
                     $(this).data('tooltip').remove();
                 });
 
                 // Añadir efecto al filtrar
                 const originalRowBackground = $('#catastroTable tbody tr').css('background-color');
-                $('#typeFilter, #statusFilter, #customSearch').on('change keyup', function() {
+                $('#typeFilter, #statusFilter, #customSearch').on('change keyup', function () {
                     if ($(this).val() !== '') {
                         $('#catastroTable').addClass('filtered');
                     } else {
                         if ($('#typeFilter').val() === '' && $('#statusFilter').val() === '' && $(
-                                '#customSearch').val() === '') {
+                            '#customSearch').val() === '') {
                             $('#catastroTable').removeClass('filtered');
                         }
                     }
@@ -490,45 +387,45 @@
                 // Añadir animaciones CSS
                 const style = document.createElement('style');
                 style.innerHTML = `
-                    .animate-scale-up {
-                        transform: scale(0.95);
-                        opacity: 0;
-                        animation: scaleUp 0.3s ease forwards;
-                    }
+                                    .animate-scale-up {
+                                        transform: scale(0.95);
+                                        opacity: 0;
+                                        animation: scaleUp 0.3s ease forwards;
+                                    }
 
-                    @keyframes scaleUp {
-                        to {
-                            transform: scale(1);
-                            opacity: 1;
-                        }
-                    }
+                                    @keyframes scaleUp {
+                                        to {
+                                            transform: scale(1);
+                                            opacity: 1;
+                                        }
+                                    }
 
-                    #modal > div {
-                        transition: transform 0.3s ease, opacity 0.3s ease;
-                        transform: scale(0.95);
-                    }
+                                    #modal > div {
+                                        transition: transform 0.3s ease, opacity 0.3s ease;
+                                        transform: scale(0.95);
+                                    }
 
-                    #modal > div.scale-100 {
-                        transform: scale(1);
-                    }
+                                    #modal > div.scale-100 {
+                                        transform: scale(1);
+                                    }
 
-                    .filtered tbody tr:not(.shown) {
-                        background-color: rgba(59, 130, 246, 0.05);
-                    }
+                                    .filtered tbody tr:not(.shown) {
+                                        background-color: rgba(59, 130, 246, 0.05);
+                                    }
 
-                    .tooltip {
-                        pointer-events: none;
-                        opacity: 0;
-                        transition: opacity 0.2s;
-                        animation: fadeIn 0.2s ease forwards;
-                    }
+                                    .tooltip {
+                                        pointer-events: none;
+                                        opacity: 0;
+                                        transition: opacity 0.2s;
+                                        animation: fadeIn 0.2s ease forwards;
+                                    }
 
-                    @keyframes fadeIn {
-                        to {
-                            opacity: 1;
-                        }
-                    }
-                `;
+                                    @keyframes fadeIn {
+                                        to {
+                                            opacity: 1;
+                                        }
+                                    }
+                                `;
                 document.head.appendChild(style);
             });
         </script>

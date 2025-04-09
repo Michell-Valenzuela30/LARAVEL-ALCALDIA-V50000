@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas que solo pueden acceder root o admin
     Route::middleware(['role:root,admin'])->group(function () {
         Route::get('/catastro', [CatastroController::class, 'index'])->name('admin.catastro.index');
+        Route::get('/catastros', [CatastroController::class, 'prueba'])->name('admin.catastro.prueba');
     });
 });
 
