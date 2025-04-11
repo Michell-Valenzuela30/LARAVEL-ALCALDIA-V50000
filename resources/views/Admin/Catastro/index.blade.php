@@ -113,7 +113,7 @@
                                             </button>
                                             <button
                                                 class="text-yellow-600 hover:text-yellow-900 bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg transition-colors dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-300"
-                                                title="Editar">
+                                                title="Editar" onclick="editCatastro({{ $catastro->id_cat }})">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -153,55 +153,61 @@
                         </svg>
                     </button>
                 </div>
-                <form>
+                <form id="catastroForm" method="POST" action="{{ route('admin.catastro.store') }}">
+                    @csrf
+                    <input type="hidden" name="id_cat" id="id_cat">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-1">
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número de
                                 expediente:</label>
-                            <input type="text"
+                            <input name="num_expe" type="text"
                                 class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                         <div class="mb-3">
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cédula/RIF:</label>
-                            <input type="text"
+                            <input name="ced" type="text"
                                 class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre y
                             apellido:</label>
-                        <input type="text"
+                        <input name="nom_ape" type="text"
                             class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div class="mb-3">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dirección:</label>
-                        <input type="text"
+                        <input name="direccion" type="text"
                             class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- TIPO -->
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo:</label>
-                            <select
+                            <select name="tipo"
                                 class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="1">Residencial</option>
-                                <option value="2">Comercial</option>
-                                <option value="3">Familiar</option>
+                                <option value="Residencial">Residencial</option>
+                                <option value="Comercial">Comercial</option>
+                                <option value="Familiar">Familiar</option>
                             </select>
                         </div>
+
+                        <!-- ESTADO -->
                         <div class="mb-1">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estado:</label>
-                            <select
+                            <select name="estado"
                                 class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="1">Activo</option>
-                                <option value="2">Pendiente</option>
-                                <option value="3">Inactivo</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Inactivo">Inactivo</option>
                             </select>
                         </div>
+
                     </div>
                     <div class="mb-2">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descripción:</label>
-                        <input type="text"
+                        <input name="descripcion" id="descripcion" type="text"
                             class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div class="flex justify-end gap-3">
@@ -323,6 +329,39 @@
                     }, 10);
                 });
 
+                const tipoMap = {
+                    'residencial': 'Residencial',
+                    'comercial': 'Comercial',
+                    'familiar': 'Familiar'
+                };
+
+                const estadoMap = {
+                    'activo': 'Activo',
+                    'pendiente': 'Pendiente',
+                    'inactivo': 'Inactivo'
+                };
+
+                window.editCatastro = function (id) {
+                    fetch(`/catastro/${id}/edit`)
+                        .then(res => res.json())
+                        .then(data => {
+                            document.getElementById('id_cat').value = data.id_cat;
+                            document.querySelector('[name=num_expe]').value = data.num_expe;
+                            document.querySelector('[name=nom_ape]').value = data.nom_ape;
+                            document.querySelector('[name=ced]').value = data.ced;
+                            document.querySelector('[name=direccion]').value = data.direccion;
+
+                            // Convertimos de texto en base de datos al valor del <select>
+                            document.querySelector('[name=tipo]').value = tipoMap[data.tipo.toLowerCase()] || '';
+                            document.querySelector('[name=estado]').value = estadoMap[data.estado] || '';
+                            document.querySelector('[name=descripcion]').value = data.descripcion;
+
+                            document.getElementById('modal').classList.remove('hidden');
+                            document.getElementById('modal').classList.add('flex');
+                        });
+                };
+
+
                 // Múltiples formas de cerrar el modal
                 const closeModal = () => {
                     document.querySelector('#modal > div').classList.add('scale-95');
@@ -340,6 +379,18 @@
                 document.getElementById('modal').addEventListener('click', (e) => {
                     if (e.target.id === 'modal') closeModal();
                 });
+
+                // Al cerrar modal, limpiar formulario
+                function resetForm() {
+                    document.getElementById('catastroForm').reset();
+                    document.getElementById('id_cat').value = '';
+                }
+                document.getElementById('closeModal').addEventListener('click', resetForm);
+                document.getElementById('closeModalX').addEventListener('click', resetForm);
+                document.getElementById('modal').addEventListener('click', (e) => {
+                    if (e.target.id === 'modal') resetForm();
+                });
+
 
                 // Aplicar efectos de hover a las filas de la tabla
                 $('#catastroTable tbody').on('mouseenter', 'tr', function () {
@@ -387,45 +438,45 @@
                 // Añadir animaciones CSS
                 const style = document.createElement('style');
                 style.innerHTML = `
-                                    .animate-scale-up {
-                                        transform: scale(0.95);
-                                        opacity: 0;
-                                        animation: scaleUp 0.3s ease forwards;
-                                    }
+                                                                                                                                    .animate-scale-up {
+                                                                                                                                        transform: scale(0.95);
+                                                                                                                                        opacity: 0;
+                                                                                                                                        animation: scaleUp 0.3s ease forwards;
+                                                                                                                                    }
 
-                                    @keyframes scaleUp {
-                                        to {
-                                            transform: scale(1);
-                                            opacity: 1;
-                                        }
-                                    }
+                                                                                                                                    @keyframes scaleUp {
+                                                                                                                                        to {
+                                                                                                                                            transform: scale(1);
+                                                                                                                                            opacity: 1;
+                                                                                                                                        }
+                                                                                                                                    }
 
-                                    #modal > div {
-                                        transition: transform 0.3s ease, opacity 0.3s ease;
-                                        transform: scale(0.95);
-                                    }
+                                                                                                                                    #modal > div {
+                                                                                                                                        transition: transform 0.3s ease, opacity 0.3s ease;
+                                                                                                                                        transform: scale(0.95);
+                                                                                                                                    }
 
-                                    #modal > div.scale-100 {
-                                        transform: scale(1);
-                                    }
+                                                                                                                                    #modal > div.scale-100 {
+                                                                                                                                        transform: scale(1);
+                                                                                                                                    }
 
-                                    .filtered tbody tr:not(.shown) {
-                                        background-color: rgba(59, 130, 246, 0.05);
-                                    }
+                                                                                                                                    .filtered tbody tr:not(.shown) {
+                                                                                                                                        background-color: rgba(59, 130, 246, 0.05);
+                                                                                                                                    }
 
-                                    .tooltip {
-                                        pointer-events: none;
-                                        opacity: 0;
-                                        transition: opacity 0.2s;
-                                        animation: fadeIn 0.2s ease forwards;
-                                    }
+                                                                                                                                    .tooltip {
+                                                                                                                                        pointer-events: none;
+                                                                                                                                        opacity: 0;
+                                                                                                                                        transition: opacity 0.2s;
+                                                                                                                                        animation: fadeIn 0.2s ease forwards;
+                                                                                                                                    }
 
-                                    @keyframes fadeIn {
-                                        to {
-                                            opacity: 1;
-                                        }
-                                    }
-                                `;
+                                                                                                                                    @keyframes fadeIn {
+                                                                                                                                        to {
+                                                                                                                                            opacity: 1;
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                `;
                 document.head.appendChild(style);
             });
         </script>

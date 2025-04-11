@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Catastro extends Model
 {
-    use HasFactory;
 
     use HasFactory;
 
