@@ -20,5 +20,6 @@ class Catastro extends Model
         'direccion',
         'tipo',
         'descripcion',
+        'estado',
     ];
 }

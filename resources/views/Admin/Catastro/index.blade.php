@@ -353,7 +353,7 @@
 
                             // Convertimos de texto en base de datos al valor del <select>
                             document.querySelector('[name=tipo]').value = tipoMap[data.tipo.toLowerCase()] || '';
-                            document.querySelector('[name=estado]').value = estadoMap[data.estado] || '';
+                            document.querySelector('[name=estado]').value = estadoMap[data.estado.toLowerCase()] || '';
                             document.querySelector('[name=descripcion]').value = data.descripcion;
 
                             document.getElementById('modal').classList.remove('hidden');

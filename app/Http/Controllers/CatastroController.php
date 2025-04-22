@@ -18,7 +18,7 @@ class CatastroController extends Controller
         $data = $request->all();
 
         // Verifica los datos recibidos
-        dd($data);
+        // dd($data);
 
         $validator = Validator::make($data, [
             'num_expe' => 'required',
