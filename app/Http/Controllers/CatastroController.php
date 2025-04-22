@@ -50,4 +50,18 @@ class CatastroController extends Controller
     {
         return response()->json(Catastro::findOrFail($id));
     }
+
+    public function destroy($id)
+    {
+        $catastro = Catastro::findOrFail($id);
+        $catastro->delete();
+
+        return response()->json(['success' => true]);
+    }
+    public function show($id)
+    {
+        $catastro = Catastro::findOrFail($id);
+        return response()->json($catastro);
+    }
+
 }

@@ -27,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/catastro', [CatastroController::class, 'index'])->name('admin.catastro.index');
         Route::post('/catastro', [CatastroController::class, 'store'])->name('admin.catastro.store');
         Route::get('/catastro/{id}/edit', [CatastroController::class, 'edit'])->name('admin.catastro.edit');
+        Route::delete('/catastro/{id}', [CatastroController::class, 'destroy'])->name('admin.catastro.destroy');
+        Route::get('/catastro/{id}', [CatastroController::class, 'show']);
+
     });
 });
 

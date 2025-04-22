@@ -121,7 +121,7 @@
                                                     </path>
                                                 </svg>
                                             </button>
-                                            <button
+                                            <button onclick="deleteCatastro({{ $catastro->id_cat }})"
                                                 class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 p-2 rounded-lg transition-colors dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-300"
                                                 title="Eliminar">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -232,6 +232,7 @@
         <script src="{{ asset('js/catastro/jquery.js') }}"></script>
         <script src="{{ asset('js/catastro/dataTables.min.js') }}"></script>
         <script src="{{ asset('js/catastro/responsive.dataTables.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function () {
                 // Inicializar DataTable
@@ -361,6 +362,61 @@
                         });
                 };
 
+                window.deleteCatastro = function (id) {
+                    // Obtener los datos del registro antes de confirmar
+                    fetch(`/catastro/${id}`)
+                        .then(res => res.json())
+                        .then(catastro => {
+                            Swal.fire({
+                                title: '¿Estás seguro?',
+                                html: `<p>Se eliminará el siguiente registro:</p>
+                                       <ul style="text-align: left">
+                                         <li><strong>Expediente:</strong> ${catastro.num_expe}</li>
+                                         <li><strong>Nombre:</strong> ${catastro.nom_ape}</li>
+                                         <li><strong>Cédula:</strong> ${catastro.ced}</li>
+                                         <li><strong>Dirección:</strong> ${catastro.direccion}</li>
+                                         <li><strong>Tipo:</strong> ${catastro.tipo}</li>
+                                         <li><strong>Descripción:</strong> ${catastro.descripcion}</li>
+                                         <li><strong>Estado:</strong> ${catastro.estado}</li>
+                                       </ul>`,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Sí, eliminar',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    fetch(`/catastro/${id}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                Swal.fire({
+                                                    title: '¡Eliminado!',
+                                                    text: 'El registro ha sido eliminado.',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                }).then(() => {
+                                                    location.reload();
+                                                });
+                                            } else {
+                                                Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                            Swal.fire('Error', 'Error en la solicitud.', 'error');
+                                        });
+                                }
+                            });
+                        });
+                };
 
                 // Múltiples formas de cerrar el modal
                 const closeModal = () => {
@@ -438,45 +494,45 @@
                 // Añadir animaciones CSS
                 const style = document.createElement('style');
                 style.innerHTML = `
-                                                                                                                                    .animate-scale-up {
-                                                                                                                                        transform: scale(0.95);
-                                                                                                                                        opacity: 0;
-                                                                                                                                        animation: scaleUp 0.3s ease forwards;
-                                                                                                                                    }
+                                                                                                                                                            .animate-scale-up {
+                                                                                                                                                                transform: scale(0.95);
+                                                                                                                                                                opacity: 0;
+                                                                                                                                                                animation: scaleUp 0.3s ease forwards;
+                                                                                                                                                            }
 
-                                                                                                                                    @keyframes scaleUp {
-                                                                                                                                        to {
-                                                                                                                                            transform: scale(1);
-                                                                                                                                            opacity: 1;
-                                                                                                                                        }
-                                                                                                                                    }
+                                                                                                                                                            @keyframes scaleUp {
+                                                                                                                                                                to {
+                                                                                                                                                                    transform: scale(1);
+                                                                                                                                                                    opacity: 1;
+                                                                                                                                                                }
+                                                                                                                                                            }
 
-                                                                                                                                    #modal > div {
-                                                                                                                                        transition: transform 0.3s ease, opacity 0.3s ease;
-                                                                                                                                        transform: scale(0.95);
-                                                                                                                                    }
+                                                                                                                                                            #modal > div {
+                                                                                                                                                                transition: transform 0.3s ease, opacity 0.3s ease;
+                                                                                                                                                                transform: scale(0.95);
+                                                                                                                                                            }
 
-                                                                                                                                    #modal > div.scale-100 {
-                                                                                                                                        transform: scale(1);
-                                                                                                                                    }
+                                                                                                                                                            #modal > div.scale-100 {
+                                                                                                                                                                transform: scale(1);
+                                                                                                                                                            }
 
-                                                                                                                                    .filtered tbody tr:not(.shown) {
-                                                                                                                                        background-color: rgba(59, 130, 246, 0.05);
-                                                                                                                                    }
+                                                                                                                                                            .filtered tbody tr:not(.shown) {
+                                                                                                                                                                background-color: rgba(59, 130, 246, 0.05);
+                                                                                                                                                            }
 
-                                                                                                                                    .tooltip {
-                                                                                                                                        pointer-events: none;
-                                                                                                                                        opacity: 0;
-                                                                                                                                        transition: opacity 0.2s;
-                                                                                                                                        animation: fadeIn 0.2s ease forwards;
-                                                                                                                                    }
+                                                                                                                                                            .tooltip {
+                                                                                                                                                                pointer-events: none;
+                                                                                                                                                                opacity: 0;
+                                                                                                                                                                transition: opacity 0.2s;
+                                                                                                                                                                animation: fadeIn 0.2s ease forwards;
+                                                                                                                                                            }
 
-                                                                                                                                    @keyframes fadeIn {
-                                                                                                                                        to {
-                                                                                                                                            opacity: 1;
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                `;
+                                                                                                                                                            @keyframes fadeIn {
+                                                                                                                                                                to {
+                                                                                                                                                                    opacity: 1;
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        `;
                 document.head.appendChild(style);
             });
         </script>
