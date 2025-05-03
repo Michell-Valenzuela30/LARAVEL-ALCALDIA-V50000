@@ -19,8 +19,37 @@ return new class extends Migration
             $table->string('direccion', 50)->nullable();
             $table->string('tipo', 50)->nullable();
             $table->string('descripcion', 50)->nullable();
-            $table->string('estado', 50)->nullable(); // Nueva columna 'estado'
+            $table->string('estado', 50)->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('ced_catastral', function (Blueprint $table) {
+            $table->id();
+            $table->integer('fk_cat');
+            $table->integer('fk_linderos');
+            $table->integer('ambito')->nullable();
+            $table->string('area', 50)->nullable();
+            $table->string('ced', 50)->nullable();
+            $table->string('direccion', 50)->nullable();
+            $table->string('tipo', 50)->nullable();
+            $table->string('descripcion', 50)->nullable();
+            $table->string('estado', 50)->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('linderos', function (Blueprint $table) {
+            $table->id();
+            $table->string('norte', 255)->nullable();
+            $table->string('sur', 255)->nullable();
+            $table->string('este', 255)->nullable();
+            $table->string('oeste', 255)->nullable();
+            $table->timestamps();
+        });
+        Schema::create('vigencia', function (Blueprint $table) {
+            $table->id();
+            $table->string('fk_catastral', 255)->nullable();
+            $table->timestamps();
+            $table->string('vencimiento', 255)->nullable();
         });
     }
 

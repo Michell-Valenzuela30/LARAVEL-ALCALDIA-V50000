@@ -6,7 +6,6 @@
 /storage/*.key
 /storage/*.installed
 /vendor
-/database/seeders/CatastrosTableSeeder.php
 .env
 .env.backup
 .env.production
