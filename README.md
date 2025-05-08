@@ -1,4 +1,4 @@
-# Templete System - Laravel 10
+# Sistema de Catastro - Laravel 10
 
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://semver.org)
