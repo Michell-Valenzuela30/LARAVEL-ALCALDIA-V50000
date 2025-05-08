@@ -13,12 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //Catastro::factory()->count(50)->create();
         $this->call([
             ConfigurationSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            CatastrosTableSeeder::class,
         ]);
     }
 }

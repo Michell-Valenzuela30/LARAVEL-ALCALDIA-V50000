@@ -34,8 +34,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.catastro.index') }}"
-                        class="flex items-center p-2 rounded-md {{ request()->routeIs('admin.catastro.index') ? 'bg-primary/10 text-primary dark:text-primary-light' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    <a href="{{ route('cedulas.index') }}"
+                        class="flex items-center p-2 rounded-md {{ request()->routeIs('cedulas.index') ? 'bg-primary/10 text-primary dark:text-primary-light' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                         <i class="fa-solid fa-box-archive w-5 h-5 mr-3"></i>
                         <span>Catastro</span>
                     </a>

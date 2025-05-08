@@ -7,8 +7,8 @@
             <i class="fas fa-home"></i>
             <span class="text-xs mt-1">Inicio</span>
         </a>
-        <a href="{{ route('admin.catastro.index') }}"
-            class="flex flex-col items-center p-2 {{ request()->routeIs('admin.catastro.index') ? 'text-primary dark:text-primary-light' : 'text-gray-600 dark:text-gray-400' }}">
+        <a href="{{ route('cedulas.index') }}"
+            class="flex flex-col items-center p-2 {{ request()->routeIs('cedulas.index') ? 'text-primary dark:text-primary-light' : 'text-gray-600 dark:text-gray-400' }}">
             <i class="fa-solid fa-box-archive"></i>
             <span class="text-xs mt-1">Catastro</span>
         </a>
