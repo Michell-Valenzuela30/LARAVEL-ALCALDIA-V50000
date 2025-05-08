@@ -1,3 +1,75 @@
+# 📌 UPDATE.md - 05 De Mayo 2025 - Controladores del Sistema de Catastro
+
+Se implementa cuatro controladores principales para gestionar las funcionalidades del Sistema de Catastro:
+
+---
+
+## 1. CedulaCatastralController
+
+**Funcionalidades implementadas:**
+
+* **index()**: Lista todas las cédulas catastrales con sus relaciones (`propietario`, `linderos`, `documentoLegal`).
+* **store(Request \$request)**: Valida y crea o actualiza una cédula catastral, incluyendo:
+
+  * Gestión de datos del propietario (creación o asociación según cédula).
+  * Creación o actualización de linderos.
+  * Creación o actualización de documento legal (si aplica).
+  * Manejo de transacciones con `DB::beginTransaction()` y `DB::commit()` / `DB::rollBack()`.
+* **show(\$id)**: Retorna los detalles de una cédula específica con sus relaciones.
+* **destroy(\$id)**: Elimina una cédula catastral verificando:
+
+  * Ausencia de solvencias municipales asociadas.
+  * Eliminación en cascada de linderos y documentos legales relacionados.
+* **buscar(Request \$request)**: Busca cédulas por número de cédula o expediente, devolviendo coincidencias con relaciones.
+
+---
+
+## 2. SolvenciaMunicipalController
+
+**Funcionalidades implementadas:**
+
+* **index()**: Lista todas las solvencias municipales con sus relaciones (`propietario`, `cedulaCatastral`).
+* **store(Request \$request)**: Valida y crea o actualiza una solvencia municipal, incluyendo:
+
+  * Validación de existencia de la cédula catastral asociada.
+  * Gestión de vigencias y fechas.
+  * Transacciones para integridad.
+* **show(\$id)**: Retorna los detalles de una solvencia específica con relaciones.
+* **destroy(\$id)**: Elimina una solvencia municipal de forma segura.
+* **generarPdf(\$id)**: Genera (o prepara) la vista para exportar la solvencia a PDF, cargando también la autoridad activa.
+* **buscarCedula(Request \$request)**: Busca una cédula catastral por número o expediente para facilitar la emisión de una solvencia.
+
+---
+
+## 3. PropietarioController
+
+**Funcionalidades implementadas:**
+
+* **index()**: Lista todos los propietarios.
+* **store(Request \$request)**: Valida y crea o actualiza un propietario, asegurando unicidad de la cédula.
+* **show(\$id)**: Retorna los detalles de un propietario con sus cédulas catastrales y solvencias municipales.
+* **destroy(\$id)**: Elimina un propietario comprobando que no existan registros asociados.
+* **buscar(Request \$request)**: Busca propietarios por nombre o cédula.
+
+---
+
+## 4. AutoridadController
+
+**Funcionalidades implementadas:**
+
+* **index()**: Lista todas las autoridades y marca la autoridad activa.
+* **store(Request \$request)**: Valida y crea o actualiza una autoridad, gestionando el atributo `activo`:
+
+  * Desactiva automáticamente otras autoridades si se marca como activa.
+* **show(\$id)**: Retorna los detalles de una autoridad específica.
+* **destroy(\$id)**: Elimina una autoridad comprobando:
+
+  * Que no sea la única existente.
+  * Que, si es activa, se asigne la activación a otra autoridad.
+* **activar(\$id)**: Establece una autoridad como la activa, desactivando previamente las demás.
+
+---
+
 # 📌 UPDATE.md - 05 De Mayo 2025 - Estructura de Base de Datos Mejorada
 
 Se implemeto:

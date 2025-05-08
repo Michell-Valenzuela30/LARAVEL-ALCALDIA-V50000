@@ -54,7 +54,7 @@ return new class extends Migration
             $table->string('numero_expediente', 50)->unique();
             $table->foreignId('propietario_id')->constrained('propietarios');
             $table->text('direccion_inmueble');
-            $table->enum('tipo_inmueble', ['Terreno', 'Casa', 'Local']);
+            $table->enum('tipo_inmueble', ['Terreno', 'Casa', 'Local', 'Galpon']);
             $table->enum('ambito', ['Urbano', 'Rural']);
             $table->foreignId('linderos_id')->constrained('linderos');
             $table->foreignId('documento_legal_id')->nullable()->constrained('documentos_legales');
