@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CatastroController;
+use App\Http\Controllers\CedulaCatastralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,12 +24,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas que solo pueden acceder root o admin
     Route::middleware(['role:root,admin'])->group(function () {
-        Route::get('/catastro', [CatastroController::class, 'index'])->name('admin.catastro.index');
-        Route::post('/catastro', [CatastroController::class, 'store'])->name('admin.catastro.store');
-        Route::get('/catastro/{id}/edit', [CatastroController::class, 'edit'])->name('admin.catastro.edit');
-        Route::delete('/catastro/{id}', [CatastroController::class, 'destroy'])->name('admin.catastro.destroy');
-        Route::get('/catastro/{id}', [CatastroController::class, 'show']);
-
+        // Rutas para Cédulas Catastrales
+        Route::prefix('cedulas')->name('cedulas.')->group(function () {
+            Route::get('/', [CedulaCatastralController::class, 'index'])->name('index');
+            Route::post('/store', [CedulaCatastralController::class, 'store'])->name('store');
+            Route::get('/{id}', [CedulaCatastralController::class, 'show'])->name('show');
+            Route::delete('/{id}', [CedulaCatastralController::class, 'destroy'])->name('destroy');
+            Route::get('/buscar', [CedulaCatastralController::class, 'buscar'])->name('buscar');
+        });
     });
 });
 

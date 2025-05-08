@@ -18,7 +18,7 @@ class CedulaCatastralController extends Controller
     public function index()
     {
         $cedulasCatastrales = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])->get();
-        return view('admin.catastro.cedulas.index', compact('cedulasCatastrales'));
+        return view('admin.catastro.index', compact('cedulasCatastrales'));
     }
 
     /**
@@ -32,7 +32,7 @@ class CedulaCatastralController extends Controller
             'nombre_apellido' => 'required|string|max:100',
             'cedula' => 'required|string|max:20',
             'direccion_inmueble' => 'required|string',
-            'tipo_inmueble' => 'required|in:Terreno,Casa,Local',
+            'tipo_inmueble' => 'required|in:Terreno,Casa,Local,Galpon',
             'ambito' => 'required|in:Urbano,Rural',
             'norte' => 'nullable|string|max:255',
             'sur' => 'nullable|string|max:255',
