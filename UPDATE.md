@@ -1,3 +1,27 @@
+# 📌 UPDATE.md - 10 De Mayo 2025 - Vista de Autoridades
+
+Implementación de la interfaz de administración de autoridades, incluyendo:
+
+* **Rutas protegidas** con middleware `role:root,admin` para listar, crear, ver, eliminar y activar autoridades.
+* **Vista principal** (`index.blade.php`) con DataTables, modal de creación/edición y visualización de autoridades activas.
+* **Controles en la interfaz**: botones para editar, activar (si está inactiva) y eliminar.
+* **Soporte de JS** con SweetAlert2 para confirmaciones y validaciones.
+* **Modificación del menú lateral y navegación móvil** con enlaces hacia la nueva vista.
+
+# 📌 UPDATE.md - 10 De Mayo 2025 - Vista de Catastro
+
+Se ha implementado la **Vista principal** del módulo de Catastro en `resources/views/admin/catastro/index.blade.php`:
+
+**Detalles de la actualización:**
+
+* Se creó la vista principal de Catastro con un listado dinámico de cédulas catastrales.
+* Se añadieron botones y modales para crear, editar y eliminar cédulas usando DataTables y SweetAlert2.
+* Se definieron componentes Blade (`modals` y `scripts`) para organizar el marcado y los comportamientos JS.
+* La tabla incluye columnas: N° de Cédula, N° de Expediente, Propietario, Tipo de Inmueble, Ámbito, Fecha de Expedición y Acciones.
+* Los scripts gestionan las peticiones AJAX a las rutas de los controladores ya implementados.
+
+Con esta vista, la interfaz administrativa de Catastro está lista para consumir la API y ofrecer una experiencia de usuario fluida.
+
 # 📌 UPDATE.md - 05 De Mayo 2025 - Controladores del Sistema de Catastro
 
 Se implementa cuatro controladores principales para gestionar las funcionalidades del Sistema de Catastro:

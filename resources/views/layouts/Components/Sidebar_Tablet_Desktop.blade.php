@@ -41,6 +41,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('autoridades.index') }}"
+                        class="flex items-center p-2 rounded-md {{ request()->routeIs('autoridades.*') ? 'bg-primary/10 text-primary dark:text-primary-light' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        <i class="fas fa-users-cog w-5 h-5 mr-3"></i>
+                        <span>Autoridades</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('usuarios.index') }}"
                         class="flex items-center p-2 rounded-md {{ request()->routeIs('usuarios.*') ? 'bg-primary/10 text-primary dark:text-primary-light' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                         <i class="fas fa-users w-5 h-5 mr-3"></i>

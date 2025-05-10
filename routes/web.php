@@ -27,10 +27,19 @@ Route::middleware(['auth'])->group(function () {
         // Rutas para Cédulas Catastrales
         Route::prefix('cedulas')->name('cedulas.')->group(function () {
             Route::get('/', [CedulaCatastralController::class, 'index'])->name('index');
+            Route::get('/data', [CedulaCatastralController::class, 'getData'])->name('data');
             Route::post('/store', [CedulaCatastralController::class, 'store'])->name('store');
             Route::get('/{id}', [CedulaCatastralController::class, 'show'])->name('show');
             Route::delete('/{id}', [CedulaCatastralController::class, 'destroy'])->name('destroy');
             Route::get('/buscar', [CedulaCatastralController::class, 'buscar'])->name('buscar');
+        });
+        // Rutas para Autoridades
+        Route::prefix('autoridades')->name('autoridades.')->group(function () {
+            Route::get('/', [App\Http\Controllers\AutoridadController::class, 'index'])->name('index');
+            Route::post('/store', [App\Http\Controllers\AutoridadController::class, 'store'])->name('store');
+            Route::get('/{id}', [App\Http\Controllers\AutoridadController::class, 'show'])->name('show');
+            Route::delete('/{id}', [App\Http\Controllers\AutoridadController::class, 'destroy'])->name('destroy');
+            Route::post('/activar/{id}', [App\Http\Controllers\AutoridadController::class, 'activar'])->name('activar');
         });
     });
 });

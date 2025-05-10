@@ -20,6 +20,16 @@ class CedulaCatastralController extends Controller
         $cedulasCatastrales = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])->get();
         return view('admin.catastro.index', compact('cedulasCatastrales'));
     }
+    /**
+     * Devuelve datos para DataTables
+     */
+    public function getData()
+    {
+        $cedulasCatastrales = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])->get();
+        return response()->json([
+            'data' => $cedulasCatastrales
+        ]);
+    }
 
     /**
      * Almacena una nueva cédula catastral o actualiza una existente
