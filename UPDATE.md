@@ -1,4 +1,24 @@
-# 📌 UPDATE.md - 10 De Mayo 2025 - Vista de Autoridades
+# 📌 22 De Mayo 2025 - Mejora de Sistema de Autoridades
+
+Reestructuración completa del sistema de autoridades para permitir gestión independiente por tipo y simplificar los datos de alcaldía. Incluye:
+
+* **Migración rediseñada**: Estructura optimizada con campos clave (`tipo`, `nombre`, `fecha_inicio_cargo`, `activo`) y restricción única para una autoridad activa por tipo.
+* **Modelo actualizado**: Nuevo método `activar()` para garantizar que solo una autoridad por tipo esté activa al mismo tiempo.
+* **Controlador refinado**:
+
+  * Nuevos métodos `index()` y `store()` para manejar creación y listado.
+  * Lógica centralizada para activar y desactivar autoridades automáticamente.
+* **Vista principal (`index.blade.php`) renovada**:
+
+  * Cards visuales para mostrar autoridades activas por tipo.
+  * Modal para historial de autoridades y nuevo **Modal de información de alcaldía** editable.
+* **Campos de alcaldía extraídos del modelo de autoridad**: Ahora se gestionan de forma separada para mayor consistencia.
+* **Validaciones mejoradas** y eliminación de campos redundantes en formularios.
+* **Menor duplicación de datos**, mejor experiencia de usuario.
+* **SweetAlert2** y lógica JS renovada para activaciones, eliminación e historial.
+* **Actualización automática** al registrar una nueva autoridad: se desactiva la anterior del mismo tipo.
+
+# 📌 10 De Mayo 2025 - Vista de Autoridades
 
 Implementación de la interfaz de administración de autoridades, incluyendo:
 
@@ -8,7 +28,7 @@ Implementación de la interfaz de administración de autoridades, incluyendo:
 * **Soporte de JS** con SweetAlert2 para confirmaciones y validaciones.
 * **Modificación del menú lateral y navegación móvil** con enlaces hacia la nueva vista.
 
-# 📌 UPDATE.md - 10 De Mayo 2025 - Vista de Catastro
+# 📌 10 De Mayo 2025 - Vista de Catastro
 
 Se ha implementado la **Vista principal** del módulo de Catastro en `resources/views/admin/catastro/index.blade.php`:
 
@@ -22,7 +42,7 @@ Se ha implementado la **Vista principal** del módulo de Catastro en `resources/
 
 Con esta vista, la interfaz administrativa de Catastro está lista para consumir la API y ofrecer una experiencia de usuario fluida.
 
-# 📌 UPDATE.md - 05 De Mayo 2025 - Controladores del Sistema de Catastro
+# 📌 05 De Mayo 2025 - Controladores del Sistema de Catastro
 
 Se implementa cuatro controladores principales para gestionar las funcionalidades del Sistema de Catastro:
 
@@ -94,7 +114,7 @@ Se implementa cuatro controladores principales para gestionar las funcionalidade
 
 ---
 
-# 📌 UPDATE.md - 05 De Mayo 2025 - Estructura de Base de Datos Mejorada
+# 📌 05 De Mayo 2025 - Estructura de Base de Datos Mejorada
 
 Se implemeto:
 1. Cédulas Catastrales

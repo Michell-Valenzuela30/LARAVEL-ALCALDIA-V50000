@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}', [CedulaCatastralController::class, 'destroy'])->name('destroy');
             Route::get('/buscar', [CedulaCatastralController::class, 'buscar'])->name('buscar');
         });
+        Route::post('/alcaldia/actualizar', [App\Http\Controllers\AlcaldiaController::class, 'actualizar']);
         // Rutas para Autoridades
         Route::prefix('autoridades')->name('autoridades.')->group(function () {
             Route::get('/', [App\Http\Controllers\AutoridadController::class, 'index'])->name('index');

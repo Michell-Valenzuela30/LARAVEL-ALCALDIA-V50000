@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Autoridad;
+use App\Models\AlcaldiaInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,9 +14,12 @@ class AutoridadController extends Controller
      */
     public function index()
     {
-        $autoridades = Autoridad::all();
-        $autoridadActiva = Autoridad::getActiva();
-        return view('Admin.Autoridades.index', compact('autoridades', 'autoridadActiva'));
+        $autoridadesActivas = Autoridad::getActivas();
+        $autoridadesInactivas = Autoridad::getInactivas();
+        $tipos = Autoridad::TIPOS;
+        $infoAlcaldia = AlcaldiaInfo::getInfo(); // AGREGAR esta línea
+
+        return view('Admin.Autoridades.index', compact('autoridadesActivas', 'autoridadesInactivas', 'tipos', 'infoAlcaldia'));
     }
 
     /**
@@ -24,13 +28,9 @@ class AutoridadController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'director_recaudacion' => 'required|string|max:100',
-            'alcalde' => 'required|string|max:100',
-            'jefe_catastro' => 'required|string|max:100',
-            'nombre_alcaldia' => 'required|string|max:100',
-            'rif_alcaldia' => 'required|string|max:20',
-            'fecha_inicio_cargo' => 'nullable|date',
-            'activo' => 'boolean'
+            'tipo' => 'required|in:director_recaudacion,alcalde,jefe_catastro',
+            'nombre' => 'required|string|max:100',
+            'fecha_inicio_cargo' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -41,37 +41,22 @@ class AutoridadController extends Controller
         }
 
         try {
-            // Si se establece como activa, desactivar las demás
-            if ($request->activo) {
-                Autoridad::where('activo', true)->update(['activo' => false]);
-            }
+            // Desactivar autoridad actual del mismo tipo si existe
+            Autoridad::where('tipo', $request->tipo)
+                ->where('activo', true)
+                ->update(['activo' => false]);
 
-            if ($request->id) {
-                $autoridad = Autoridad::findOrFail($request->id);
-                $autoridad->update([
-                    'director_recaudacion' => $request->director_recaudacion,
-                    'alcalde' => $request->alcalde,
-                    'jefe_catastro' => $request->jefe_catastro,
-                    'nombre_alcaldia' => $request->nombre_alcaldia,
-                    'rif_alcaldia' => $request->rif_alcaldia,
-                    'fecha_inicio_cargo' => $request->fecha_inicio_cargo,
-                    'activo' => $request->activo ?? false
-                ]);
-            } else {
-                $autoridad = Autoridad::create([
-                    'director_recaudacion' => $request->director_recaudacion,
-                    'alcalde' => $request->alcalde,
-                    'jefe_catastro' => $request->jefe_catastro,
-                    'nombre_alcaldia' => $request->nombre_alcaldia,
-                    'rif_alcaldia' => $request->rif_alcaldia,
-                    'fecha_inicio_cargo' => $request->fecha_inicio_cargo,
-                    'activo' => $request->activo ?? false
-                ]);
-            }
+            // Crear nueva autoridad
+            $autoridad = Autoridad::create([
+                'tipo' => $request->tipo,
+                'nombre' => $request->nombre,
+                'fecha_inicio_cargo' => $request->fecha_inicio_cargo,
+                'activo' => true
+            ]);
 
             return response()->json([
                 'success' => true,
-                'message' => $request->id ? 'Autoridad actualizada con éxito' : 'Autoridad creada con éxito',
+                'message' => 'Autoridad agregada con éxito',
                 'autoridad' => $autoridad
             ]);
         } catch (\Exception $e) {
@@ -139,13 +124,8 @@ class AutoridadController extends Controller
     public function activar($id)
     {
         try {
-            // Desactivar todas las autoridades
-            Autoridad::where('activo', true)->update(['activo' => false]);
-
-            // Activar la seleccionada
             $autoridad = Autoridad::findOrFail($id);
-            $autoridad->activo = true;
-            $autoridad->save();
+            $autoridad->activar();
 
             return response()->json([
                 'success' => true,
@@ -155,6 +135,41 @@ class AutoridadController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al activar la autoridad: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    /**
+     * Actualiza los datos de la alcaldía
+     */
+    public function updateAlcaldia(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:100',
+            'rif' => 'required|string|max:20',
+            'direccion' => 'nullable|string|max:200',
+            'telefono' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $alcaldia = AlcaldiaInfo::actualizarDatos($request->all());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Datos de alcaldía actualizados con éxito',
+                'alcaldia' => $alcaldia
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar los datos: ' . $e->getMessage()
             ], 500);
         }
     }

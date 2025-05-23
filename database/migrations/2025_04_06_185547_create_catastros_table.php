@@ -87,13 +87,20 @@ return new class extends Migration
         // Tabla para autoridades municipales
         Schema::create('autoridades', function (Blueprint $table) {
             $table->id();
-            $table->string('director_recaudacion', 100);
-            $table->string('alcalde', 100);
-            $table->string('jefe_catastro', 100);
-            $table->string('nombre_alcaldia', 100);
-            $table->string('rif_alcaldia', 20);
-            $table->date('fecha_inicio_cargo')->nullable();
+            $table->enum('tipo', ['director_recaudacion', 'alcalde', 'jefe_catastro']);
+            $table->string('nombre', 100);
+            $table->date('fecha_inicio_cargo');
             $table->boolean('activo')->default(true);
+
+            $table->timestamps();
+
+            // Solo puede haber una autoridad activa por tipo
+            $table->index(['tipo', 'activo']);
+        });
+        Schema::create('alcaldia_info', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->string('rif', 20);
             $table->timestamps();
         });
     }
@@ -109,5 +116,6 @@ return new class extends Migration
         Schema::dropIfExists('linderos');
         Schema::dropIfExists('propietarios');
         Schema::dropIfExists('autoridades');
+        Schema::dropIfExists('alcaldia_info');
     }
 };
