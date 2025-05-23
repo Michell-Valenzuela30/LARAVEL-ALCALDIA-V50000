@@ -49,6 +49,7 @@
 
         @vite('resources/js/views/layouts/adminLayout.js')
 
+        @stack('styles')
         @stack('scripts')
     </body>
 

@@ -36,7 +36,7 @@
                 <button id="btn-ver-historial" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                     <i class="fas fa-history mr-2"></i>Ver Historial
                 </button>
-                <button id="btn-nueva-autoridad" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
+                <button id="btn-nueva-autoridad" class="px-4 py-2 bg-primary hidden text-white rounded-md hover:bg-primary-dark">
                     <i class="fas fa-plus mr-2"></i>Nueva Autoridad
                 </button>
             </div>

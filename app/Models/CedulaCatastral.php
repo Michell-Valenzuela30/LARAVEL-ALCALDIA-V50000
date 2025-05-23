@@ -24,10 +24,6 @@ class CedulaCatastral extends Model
         'fecha_expedicion',
         'vigencia_trimestre',
         'solicitado_para',
-        'dato_opcional_1',
-        'dato_opcional_2',
-        'dato_opcional_3',
-        'dato_opcional_texto',
     ];
 
     /**

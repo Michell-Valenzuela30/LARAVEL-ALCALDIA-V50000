@@ -62,10 +62,6 @@ return new class extends Migration
             $table->date('fecha_expedicion');
             $table->enum('vigencia_trimestre', ['PRIMER', 'SEGUNDO', 'TERCER', 'CUARTO']);
             $table->string('solicitado_para')->nullable();
-            $table->integer('dato_opcional_1')->nullable();
-            $table->integer('dato_opcional_2')->nullable();
-            $table->integer('dato_opcional_3')->nullable();
-            $table->string('dato_opcional_texto')->nullable();
             $table->timestamps();
         });
 

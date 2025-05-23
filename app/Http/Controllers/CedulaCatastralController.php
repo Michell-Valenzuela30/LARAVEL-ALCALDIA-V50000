@@ -21,6 +21,156 @@ class CedulaCatastralController extends Controller
         return view('admin.catastro.index', compact('cedulasCatastrales'));
     }
     /**
+     * Obtiene la lista de propietarios para el select
+     */
+    public function getPropietarios()
+    {
+        $propietarios = Propietario::select('id', 'nombre_apellido', 'cedula')
+            ->orderBy('nombre_apellido')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'propietarios' => $propietarios
+        ]);
+    }
+
+    /**
+     * Crea un nuevo propietario
+     */
+    public function storePropietario(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nombre_apellido' => 'required|string|max:100',
+            'cedula' => 'required|string|max:20|unique:propietarios,cedula',
+            'rif' => 'nullable|string|max:20'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $propietario = Propietario::create([
+                'nombre_apellido' => $request->nombre_apellido,
+                'cedula' => $request->cedula,
+                'rif' => $request->rif
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Propietario creado exitosamente',
+                'propietario' => $propietario
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el propietario: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Renueva una cédula catastral para el siguiente trimestre
+     */
+    public function renovar($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $cedulaOriginal = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])->findOrFail($id);
+
+            // Determinar el siguiente trimestre
+            $trimestreActual = $cedulaOriginal->vigencia_trimestre;
+            $siguienteTrimestre = $this->getSiguienteTrimestre($trimestreActual);
+
+            // Crear nuevos linderos (copia)
+            $nuevosLinderos = Lindero::create([
+                'norte' => $cedulaOriginal->linderos->norte,
+                'sur' => $cedulaOriginal->linderos->sur,
+                'este' => $cedulaOriginal->linderos->este,
+                'oeste' => $cedulaOriginal->linderos->oeste,
+                'mt2_norte' => $cedulaOriginal->linderos->mt2_norte,
+                'mt2_sur' => $cedulaOriginal->linderos->mt2_sur,
+                'mt2_este' => $cedulaOriginal->linderos->mt2_este,
+                'mt2_oeste' => $cedulaOriginal->linderos->mt2_oeste,
+                'mt2_total' => $cedulaOriginal->linderos->mt2_total,
+            ]);
+
+            // Crear nuevo documento legal si existe (copia)
+            $nuevoDocumentoLegalId = null;
+            if ($cedulaOriginal->documentoLegal) {
+                $nuevoDocumentoLegal = DocumentoLegal::create([
+                    'tipo' => $cedulaOriginal->documentoLegal->tipo,
+                    'numero' => $cedulaOriginal->documentoLegal->numero,
+                    'matricula' => $cedulaOriginal->documentoLegal->matricula,
+                    'folio' => $cedulaOriginal->documentoLegal->folio,
+                    'fecha' => $cedulaOriginal->documentoLegal->fecha,
+                    'descripcion' => $cedulaOriginal->documentoLegal->descripcion,
+                ]);
+                $nuevoDocumentoLegalId = $nuevoDocumentoLegal->id;
+            }
+
+            // Generar nuevo número de cédula
+            $nuevoNumeroCedula = $this->generarNuevoNumeroCedula($cedulaOriginal->numero_cedula);
+
+            // Crear nueva cédula catastral
+            $nuevaCedula = CedulaCatastral::create([
+                'numero_cedula' => $nuevoNumeroCedula,
+                'numero_expediente' => $cedulaOriginal->numero_expediente . '-R', // Agregamos -R para indicar renovación
+                'propietario_id' => $cedulaOriginal->propietario_id,
+                'direccion_inmueble' => $cedulaOriginal->direccion_inmueble,
+                'tipo_inmueble' => $cedulaOriginal->tipo_inmueble,
+                'ambito' => $cedulaOriginal->ambito,
+                'linderos_id' => $nuevosLinderos->id,
+                'documento_legal_id' => $nuevoDocumentoLegalId,
+                'avaluo_total' => $cedulaOriginal->avaluo_total,
+                'fecha_expedicion' => now()->toDateString(),
+                'vigencia_trimestre' => $siguienteTrimestre,
+                'solicitado_para' => $cedulaOriginal->solicitado_para,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cédula catastral renovada exitosamente',
+                'cedula' => $nuevaCedula->load(['propietario', 'linderos', 'documentoLegal'])
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al renovar la cédula catastral: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    private function getSiguienteTrimestre($trimestreActual)
+    {
+        $trimestres = ['PRIMER', 'SEGUNDO', 'TERCER', 'CUARTO'];
+        $indiceActual = array_search($trimestreActual, $trimestres);
+
+        // Si es el cuarto trimestre, vuelve al primero
+        return $trimestres[($indiceActual + 1) % 4];
+    }
+
+    private function generarNuevoNumeroCedula($numeroCedulaAnterior)
+    {
+        // Extraer el número base y agregar un sufijo o incrementar
+        $contador = 1;
+        do {
+            $nuevoNumero = $numeroCedulaAnterior . '-' . str_pad($contador, 2, '0', STR_PAD_LEFT);
+            $existe = CedulaCatastral::where('numero_cedula', $nuevoNumero)->exists();
+            $contador++;
+        } while ($existe);
+
+        return $nuevoNumero;
+    }
+    /**
      * Devuelve datos para DataTables
      */
     public function getData()
@@ -62,11 +212,7 @@ class CedulaCatastralController extends Controller
             'avaluo_total' => 'nullable|numeric',
             'fecha_expedicion' => 'required|date',
             'vigencia_trimestre' => 'required|in:PRIMER,SEGUNDO,TERCER,CUARTO',
-            'solicitado_para' => 'nullable|string',
-            'dato_opcional_1' => 'nullable|integer',
-            'dato_opcional_2' => 'nullable|integer',
-            'dato_opcional_3' => 'nullable|integer',
-            'dato_opcional_texto' => 'nullable|string'
+            'solicitado_para' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
@@ -79,14 +225,8 @@ class CedulaCatastralController extends Controller
         try {
             DB::beginTransaction();
 
-            // Buscar o crear el propietario
-            $propietario = Propietario::firstOrCreate(
-                ['cedula' => $request->cedula],
-                [
-                    'nombre_apellido' => $request->nombre_apellido,
-                    'rif' => $request->rif ?? null
-                ]
-            );
+            // Obtener el propietario seleccionado
+            $propietario = Propietario::findOrFail($request->propietario_id);
 
             // Crear o actualizar linderos
             $linderos = new Lindero();
@@ -142,11 +282,7 @@ class CedulaCatastralController extends Controller
                     'avaluo_total' => $request->avaluo_total,
                     'fecha_expedicion' => $request->fecha_expedicion,
                     'vigencia_trimestre' => $request->vigencia_trimestre,
-                    'solicitado_para' => $request->solicitado_para,
-                    'dato_opcional_1' => $request->dato_opcional_1,
-                    'dato_opcional_2' => $request->dato_opcional_2,
-                    'dato_opcional_3' => $request->dato_opcional_3,
-                    'dato_opcional_texto' => $request->dato_opcional_texto
+                    'solicitado_para' => $request->solicitado_para
                 ]);
             } else {
                 $cedulaCatastral = CedulaCatastral::create([
@@ -161,11 +297,7 @@ class CedulaCatastralController extends Controller
                     'avaluo_total' => $request->avaluo_total,
                     'fecha_expedicion' => $request->fecha_expedicion,
                     'vigencia_trimestre' => $request->vigencia_trimestre,
-                    'solicitado_para' => $request->solicitado_para,
-                    'dato_opcional_1' => $request->dato_opcional_1,
-                    'dato_opcional_2' => $request->dato_opcional_2,
-                    'dato_opcional_3' => $request->dato_opcional_3,
-                    'dato_opcional_texto' => $request->dato_opcional_texto
+                    'solicitado_para' => $request->solicitado_para
                 ]);
             }
 

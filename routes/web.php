@@ -32,7 +32,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}', [CedulaCatastralController::class, 'show'])->name('show');
             Route::delete('/{id}', [CedulaCatastralController::class, 'destroy'])->name('destroy');
             Route::get('/buscar', [CedulaCatastralController::class, 'buscar'])->name('buscar');
+            Route::post('/{id}/renovar', [CedulaCatastralController::class, 'renovar'])->name('cedulas.renovar');
         });
+        // Rutas para propietarios
+        Route::get('/propietarios/get', [CedulaCatastralController::class, 'getPropietarios'])->name('propietarios.get');
+        Route::post('/propietarios', [CedulaCatastralController::class, 'storePropietario'])->name('propietarios.store');
         Route::post('/alcaldia/actualizar', [App\Http\Controllers\AlcaldiaController::class, 'actualizar']);
         // Rutas para Autoridades
         Route::prefix('autoridades')->name('autoridades.')->group(function () {
