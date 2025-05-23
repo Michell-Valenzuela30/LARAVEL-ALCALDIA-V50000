@@ -1,3 +1,18 @@
+# 📌 23 De Mayo 2025 - Mejora de Sistema de Autoridades
+
+**Modal de Propietario:** Reemplazado completamente con formulario funcional
+**Estilos CSS:** Agregados después de @push('scripts') para la navegación por pasos
+**JavaScript:** Reemplazado completamente con:
+
+**Navegación por pasos funcional
+Validación por pasos
+Carga dinámica de propietarios
+Funcionalidad completa de creación de propietarios
+Renovación de cédulas
+Mejoras en la edición de cédulas**
+
+Rutas: Agregar las 3 rutas nuevas en web.php
+
 # 📌 22 De Mayo 2025 - Mejora de Sistema de Autoridades
 
 Reestructuración completa del sistema de autoridades para permitir gestión independiente por tipo y simplificar los datos de alcaldía. Incluye:

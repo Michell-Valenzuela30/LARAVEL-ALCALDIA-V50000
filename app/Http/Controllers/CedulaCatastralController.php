@@ -187,10 +187,9 @@ class CedulaCatastralController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'propietario_id' => 'required|exists:propietarios,id',
             'numero_cedula' => 'required|string|max:50|unique:cedulas_catastrales,numero_cedula,' . $request->id,
             'numero_expediente' => 'required|string|max:50|unique:cedulas_catastrales,numero_expediente,' . $request->id,
-            'nombre_apellido' => 'required|string|max:100',
-            'cedula' => 'required|string|max:20',
             'direccion_inmueble' => 'required|string',
             'tipo_inmueble' => 'required|in:Terreno,Casa,Local,Galpon',
             'ambito' => 'required|in:Urbano,Rural',

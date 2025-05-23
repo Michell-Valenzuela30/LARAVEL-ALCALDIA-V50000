@@ -648,6 +648,12 @@
                                 isValid = false;
                             }
                             break;
+                        case 3: // Linderos - validación opcional
+                            // Los linderos son opcionales, pero si se llenan algunos campos, validar coherencia
+                            break;
+                        case 4: // Documentos - validación opcional
+                            // Los documentos son opcionales
+                            break;
                     }
 
                     return isValid;
@@ -714,16 +720,32 @@
                             }
                         },
                         error: function(xhr) {
+                            console.log('Error response:', xhr.responseJSON); // Para depuración
                             const response = xhr.responseJSON;
+
                             if (response && response.errors) {
+                                // Mostrar errores de validación
                                 Object.keys(response.errors).forEach(function(key) {
                                     $(`.error-${key}`).text(response.errors[key][0]);
                                 });
+
+                                // Si hay errores en el paso 1 o 2, volver a ese paso
+                                if (response.errors.propietario_id) {
+                                    showStep(1);
+                                } else if (response.errors.numero_cedula || response.errors
+                                    .numero_expediente ||
+                                    response.errors.direccion_inmueble || response.errors
+                                    .tipo_inmueble ||
+                                    response.errors.ambito || response.errors.fecha_expedicion ||
+                                    response.errors.vigencia_trimestre) {
+                                    showStep(2);
+                                }
                             } else {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error',
-                                    text: 'Error al crear el propietario'
+                                    text: response && response.message ? response.message :
+                                        'Error al guardar la cédula catastral'
                                 });
                             }
                         }
@@ -857,6 +879,7 @@
                     $('.text-red-500').empty();
 
                     const formData = $(this).serialize();
+                    console.log('Datos del formulario:', formData); // Para depuración
 
                     $.ajax({
                         url: "{{ route('cedulas.store') }}",
