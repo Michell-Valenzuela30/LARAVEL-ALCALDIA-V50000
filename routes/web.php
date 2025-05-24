@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [CedulaCatastralController::class, 'index'])->name('index');
             Route::get('/data', [CedulaCatastralController::class, 'getData'])->name('data');
             Route::post('/store', [CedulaCatastralController::class, 'store'])->name('store');
+            Route::get('/{numeroCedulaBase}/historial', [CedulaCatastralController::class, 'getHistorial'])->name('cedulas.historial');
             Route::get('/{id}', [CedulaCatastralController::class, 'show'])->name('show');
             Route::delete('/{id}', [CedulaCatastralController::class, 'destroy'])->name('destroy');
             Route::get('/buscar', [CedulaCatastralController::class, 'buscar'])->name('buscar');

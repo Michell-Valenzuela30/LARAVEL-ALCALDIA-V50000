@@ -13,20 +13,56 @@
             </button>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg">
             <table id="tabla-cedulas" class="w-full text-sm text-left text-gray-700 dark:text-gray-300">
-                <thead class="text-xs uppercase bg-gray-100 dark:bg-gray-700">
+                <thead
+                    class="text-xs font-semibold uppercase bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200">
                     <tr>
-                        <th class="px-4 py-3">N° Cédula</th>
-                        <th class="px-4 py-3">N° Expediente</th>
-                        <th class="px-4 py-3">Propietario</th>
-                        <th class="px-4 py-3">Tipo Inmueble</th>
-                        <th class="px-4 py-3">Ámbito</th>
-                        <th class="px-4 py-3">Fecha Expedición</th>
-                        <th class="px-4 py-3">Acciones</th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-hashtag text-blue-500"></i>
+                                <span>N° Cédula</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-folder-open text-green-500"></i>
+                                <span>N° Expediente</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-user text-purple-500"></i>
+                                <span>Propietario</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-home text-orange-500"></i>
+                                <span>Tipo Inmueble</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt text-red-500"></i>
+                                <span>Ámbito</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-calendar text-yellow-500"></i>
+                                <span>Fecha Expedición</span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-cogs text-gray-500"></i>
+                                <span>Acciones</span>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     <!-- Los datos se cargarán dinámicamente con DataTables -->
                 </tbody>
             </table>
@@ -315,7 +351,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal de confirmación de eliminación -->
     <div id="modal-eliminar" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
@@ -456,8 +491,28 @@
                 const tabla = $('#tabla-cedulas').DataTable({
                     responsive: true,
                     processing: true,
+                    pageLength: 10,
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "Todos"]
+                    ],
                     language: {
                         url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json'
+                    },
+                    dom: '<"flex flex-col md:flex-row justify-between items-center mb-4 space-y-2 md:space-y-0"<"flex items-center"l><"flex items-center space-x-2"f>>rtip',
+                    initComplete: function() {
+                        // Aplicar estilos a los controles de DataTables
+                        $('.dataTables_length select').addClass(
+                            'px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                        );
+                        $('.dataTables_filter input').addClass(
+                            'px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                        );
+                        $('.dataTables_paginate .paginate_button').addClass(
+                            'px-3 py-2 mx-1 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300'
+                        );
+                        $('.dataTables_paginate .paginate_button.current').addClass(
+                            '!bg-blue-600 !text-white !border-blue-600');
                     },
                     ajax: {
                         url: "{{ route('cedulas.data') }}",
@@ -469,47 +524,80 @@
                         }
                     },
                     columns: [{
-                            data: 'numero_cedula'
+                            data: 'numero_cedula',
+                            className: 'px-6 py-4 font-medium text-gray-900 dark:text-gray-100'
                         },
                         {
-                            data: 'numero_expediente'
+                            data: 'numero_expediente',
+                            className: 'px-6 py-4 text-gray-700 dark:text-gray-300'
                         },
                         {
                             data: 'propietario.nombre_apellido',
                             defaultContent: 'N/A',
+                            className: 'px-6 py-4 text-gray-700 dark:text-gray-300',
                             render: function(data, type, row) {
-                                return row.propietario ? row.propietario.nombre_apellido : 'N/A';
+                                return row.propietario ?
+                                    `<div class="flex flex-col">
+                    <span class="font-medium">${row.propietario.nombre_apellido}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">${row.propietario.cedula}</span>
+                </div>` : 'N/A';
                             }
                         },
                         {
-                            data: 'tipo_inmueble'
+                            data: 'tipo_inmueble',
+                            className: 'px-6 py-4',
+                            render: function(data) {
+                                const colores = {
+                                    'Terreno': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+                                    'Casa': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+                                    'Local': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+                                    'Galpon': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
+                                };
+                                return `<span class="px-2 py-1 text-xs font-semibold rounded-full ${colores[data] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'}">${data}</span>`;
+                            }
                         },
                         {
-                            data: 'ambito'
+                            data: 'ambito',
+                            className: 'px-6 py-4',
+                            render: function(data) {
+                                const color = data === 'Urbano' ?
+                                    'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' :
+                                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+                                return `<span class="px-2 py-1 text-xs font-semibold rounded-full ${color}">${data}</span>`;
+                            }
                         },
                         {
                             data: 'fecha_expedicion',
+                            className: 'px-6 py-4 text-gray-700 dark:text-gray-300',
                             render: function(data) {
-                                return new Date(data).toLocaleDateString('es-ES');
+                                return new Date(data).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                });
                             }
                         },
                         {
                             data: null,
                             orderable: false,
+                            className: 'px-6 py-4',
                             render: function(data) {
                                 return `
-                        <div class="flex space-x-2">
-                            <button class="btn-editar text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" data-id="${data.id}" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-renovar text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300" data-id="${data.id}" title="Renovar">
-                                <i class="fas fa-sync-alt"></i>
-                            </button>
-                            <button class="btn-eliminar text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" data-id="${data.id}" title="Eliminar">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
-                    `;
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-editar inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md" data-id="${data.id}" title="Editar">
+                                    <i class="fas fa-edit w-3 h-3"></i>
+                                </button>
+                                <button class="btn-renovar inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md" data-id="${data.id}" title="Renovar">
+                                    <i class="fas fa-sync-alt w-3 h-3"></i>
+                                </button>
+                                <button class="btn-historial inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md" data-numero="${data.numero_cedula}" title="Ver Historial">
+                                    <i class="fas fa-history w-3 h-3"></i>
+                                </button>
+                                <button class="btn-eliminar inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md" data-id="${data.id}" title="Eliminar">
+                                    <i class="fas fa-trash-alt w-3 h-3"></i>
+                                </button>
+                            </div>
+                        `;
                             }
                         }
                     ]
@@ -977,6 +1065,166 @@
                         $('#fecha_documento').val(cedula.documentoLegal.fecha);
                         $('#descripcion_documento').val(cedula.documentoLegal.descripcion);
                     }
+                }
+                // Ver historial de cédula
+                $(document).on('click', '.btn-historial', function() {
+                    const numeroCedula = $(this).data('numero');
+
+                    $.ajax({
+                        url: `{{ url('/') }}/cedulas/${numeroCedula}/historial`,
+                        type: 'GET',
+                        success: function(response) {
+                            if (response.success) {
+                                mostrarModalHistorial(response.historial);
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'No se pudo cargar el historial de la cédula'
+                            });
+                        }
+                    });
+                });
+
+                // Función para mostrar el modal de historial
+                function mostrarModalHistorial(historial) {
+                    let contenidoHistorial = '';
+
+                    historial.forEach(function(cedula, index) {
+                        const esActual = index === 0;
+                        const badgeColor = esActual ?
+                            'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
+                            'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+                        const badgeText = esActual ? 'ACTUAL' : 'HISTÓRICA';
+
+                        contenidoHistorial += `
+            <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 ${esActual ? 'bg-green-50 dark:bg-green-900/20' : 'bg-gray-50 dark:bg-gray-800'}">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-gray-100">Cédula: ${cedula.numero_cedula}</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Expediente: ${cedula.numero_expediente}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${badgeColor}">${badgeText}</span>
+                        <button class="btn-ver-detalle px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors" data-cedula='${JSON.stringify(cedula)}'>
+                            <i class="fas fa-eye mr-1"></i> Ver Detalle
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span class="text-gray-600 dark:text-gray-400">Fecha Expedición:</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">${new Date(cedula.fecha_expedicion).toLocaleDateString('es-ES')}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600 dark:text-gray-400">Vigencia:</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">${cedula.vigencia_trimestre} TRIMESTRE</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600 dark:text-gray-400">Tipo:</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">${cedula.tipo_inmueble}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600 dark:text-gray-400">Ámbito:</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">${cedula.ambito}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+                    });
+
+                    Swal.fire({
+                        title: 'Historial de Cédula Catastral',
+                        html: `
+            <div class="text-left max-h-96 overflow-y-auto space-y-4">
+                ${contenidoHistorial}
+            </div>
+        `,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        width: '800px',
+                        customClass: {
+                            popup: 'dark:bg-gray-800',
+                            title: 'dark:text-gray-100',
+                            htmlContainer: 'dark:text-gray-300'
+                        }
+                    });
+                }
+
+                // Ver detalle de una cédula específica del historial
+                $(document).on('click', '.btn-ver-detalle', function() {
+                    const cedulaData = JSON.parse($(this).attr('data-cedula'));
+                    mostrarDetalleCompleto(cedulaData);
+                });
+
+                function mostrarDetalleCompleto(cedula) {
+                    const contenidoDetalle = `
+        <div class="text-left space-y-6">
+            <!-- Información General -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Información General</h3>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div><span class="font-medium">N° Cédula:</span> ${cedula.numero_cedula}</div>
+                    <div><span class="font-medium">N° Expediente:</span> ${cedula.numero_expediente}</div>
+                    <div><span class="font-medium">Propietario:</span> ${cedula.propietario ? cedula.propietario.nombre_apellido : 'N/A'}</div>
+                    <div><span class="font-medium">Cédula Prop.:</span> ${cedula.propietario ? cedula.propietario.cedula : 'N/A'}</div>
+                    <div><span class="font-medium">Tipo Inmueble:</span> ${cedula.tipo_inmueble}</div>
+                    <div><span class="font-medium">Ámbito:</span> ${cedula.ambito}</div>
+                    <div><span class="font-medium">Fecha Expedición:</span> ${new Date(cedula.fecha_expedicion).toLocaleDateString('es-ES')}</div>
+                    <div><span class="font-medium">Vigencia:</span> ${cedula.vigencia_trimestre} TRIMESTRE</div>
+                </div>
+                <div class="mt-3">
+                    <div><span class="font-medium">Dirección:</span> ${cedula.direccion_inmueble}</div>
+                    ${cedula.avaluo_total ? `<div><span class="font-medium">Avalúo Total:</span> ${new Intl.NumberFormat('es-VE').format(cedula.avaluo_total)} Bs.</div>` : ''}
+                    ${cedula.solicitado_para ? `<div><span class="font-medium">Solicitado Para:</span> ${cedula.solicitado_para}</div>` : ''}
+                </div>
+            </div>
+
+            <!-- Linderos -->
+            ${cedula.linderos ? `
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Linderos</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            ${cedula.linderos.norte ? `<div><span class="font-medium">Norte:</span> ${cedula.linderos.norte} ${cedula.linderos.mt2_norte ? `(${cedula.linderos.mt2_norte} m²)` : ''}</div>` : ''}
+                            ${cedula.linderos.sur ? `<div><span class="font-medium">Sur:</span> ${cedula.linderos.sur} ${cedula.linderos.mt2_sur ? `(${cedula.linderos.mt2_sur} m²)` : ''}</div>` : ''}
+                            ${cedula.linderos.este ? `<div><span class="font-medium">Este:</span> ${cedula.linderos.este} ${cedula.linderos.mt2_este ? `(${cedula.linderos.mt2_este} m²)` : ''}</div>` : ''}
+                            ${cedula.linderos.oeste ? `<div><span class="font-medium">Oeste:</span> ${cedula.linderos.oeste} ${cedula.linderos.mt2_oeste ? `(${cedula.linderos.mt2_oeste} m²)` : ''}</div>` : ''}
+                        </div>
+                        ${cedula.linderos.mt2_total ? `<div class="mt-3 text-sm"><span class="font-medium">Total:</span> ${cedula.linderos.mt2_total} m²</div>` : ''}
+                    </div>
+                    ` : ''}
+
+            <!-- Documento Legal -->
+            ${cedula.documento_legal ? `
+                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Documento Legal</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><span class="font-medium">Tipo:</span> ${cedula.documento_legal.tipo}</div>
+                            ${cedula.documento_legal.numero ? `<div><span class="font-medium">Número:</span> ${cedula.documento_legal.numero}</div>` : ''}
+                            ${cedula.documento_legal.matricula ? `<div><span class="font-medium">Matrícula:</span> ${cedula.documento_legal.matricula}</div>` : ''}
+                            ${cedula.documento_legal.folio ? `<div><span class="font-medium">Folio:</span> ${cedula.documento_legal.folio}</div>` : ''}
+                            ${cedula.documento_legal.fecha ? `<div><span class="font-medium">Fecha:</span> ${new Date(cedula.documento_legal.fecha).toLocaleDateString('es-ES')}</div>` : ''}
+                        </div>
+                        ${cedula.documento_legal.descripcion ? `<div class="mt-3 text-sm"><span class="font-medium">Descripción:</span> ${cedula.documento_legal.descripcion}</div>` : ''}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+                    Swal.fire({
+                        title: `Detalle de Cédula ${cedula.numero_cedula}`,
+                        html: contenidoDetalle,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        width: '900px',
+                        customClass: {
+                            popup: 'dark:bg-gray-800',
+                            title: 'dark:text-gray-100',
+                            htmlContainer: 'dark:text-gray-300'
+                        }
+                    });
                 }
             });
         </script>

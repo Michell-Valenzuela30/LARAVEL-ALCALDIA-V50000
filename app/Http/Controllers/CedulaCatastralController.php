@@ -175,7 +175,19 @@ class CedulaCatastralController extends Controller
      */
     public function getData()
     {
-        $cedulasCatastrales = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])->get();
+        // Obtener solo las cédulas más recientes de cada serie
+        $cedulasCatastrales = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])
+            ->whereRaw('id IN (
+            SELECT MAX(id)
+            FROM cedulas_catastrales
+            GROUP BY CASE
+                WHEN numero_cedula LIKE "%-%"
+                THEN SUBSTRING_INDEX(numero_cedula, "-", 1)
+                ELSE numero_cedula
+            END
+        )')
+            ->get();
+
         return response()->json([
             'data' => $cedulasCatastrales
         ]);
@@ -392,6 +404,29 @@ class CedulaCatastralController extends Controller
         return response()->json([
             'success' => true,
             'cedulas' => $cedulas
+        ]);
+    }
+    /**
+     * Obtiene el historial de una cédula catastral
+     */
+    public function getHistorial($numeroCedulaBase)
+    {
+        // Extraer el número base de la cédula
+        $numeroBase = strpos($numeroCedulaBase, '-') !== false
+            ? substr($numeroCedulaBase, 0, strpos($numeroCedulaBase, '-'))
+            : $numeroCedulaBase;
+
+        $historial = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])
+            ->where(function ($query) use ($numeroBase) {
+                $query->where('numero_cedula', $numeroBase)
+                    ->orWhere('numero_cedula', 'like', $numeroBase . '-%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'historial' => $historial
         ]);
     }
 }
