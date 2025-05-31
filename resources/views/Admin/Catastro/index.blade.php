@@ -138,8 +138,9 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="numero_cedula" class="block mb-2 text-sm font-medium">Cédula Catastral</label>
-                                <input type="text" id="numero_cedula" name="numero_cedula"
-                                    class="w-full p-2.5 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                                <input type="text" id="numero_cedula" name="numero_cedula" readonly
+                                    class="w-full p-2.5 border rounded-md dark:bg-gray-700 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+                                    placeholder="Se generará automáticamente">
                                 <div class="text-red-500 text-xs mt-1 error-numero_cedula"></div>
                             </div>
 
@@ -749,11 +750,14 @@
 
                 // Modal de Nueva Cédula
                 $('#btn-nueva-cedula').click(function() {
-                    resetearFormulario();
-                    cargarPropietarios();
-                    showStep(1);
+                    resetearFormularioPropietario();
                     $('#modal-title').text('Nueva Cédula Catastral');
+                    $('#cedula-id').val('');
+                    establecerNumeroCedulaAutomatico(); // AGREGAR esta línea
+                    currentStep = 1;
+                    showStep(currentStep);
                     $('#modal-cedula').removeClass('hidden');
+                    cargarPropietarios();
                 });
 
                 // Cerrar modales
@@ -1014,6 +1018,12 @@
                     $('.text-red-500').empty();
                     $('#info-propietario').addClass('hidden');
                 }
+                // Función para establecer número automático al crear
+                function establecerNumeroCedulaAutomatico() {
+                    if (!$('#cedula-id').val()) { // Solo para nuevas cédulas
+                        $('#numero_cedula').val('Se generará automáticamente');
+                    }
+                }
 
                 // Función para resetear el formulario de propietario
                 function resetearFormularioPropietario() {
@@ -1184,32 +1194,32 @@
 
             <!-- Linderos -->
             ${cedula.linderos ? `
-                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Linderos</h3>
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            ${cedula.linderos.norte ? `<div><span class="font-medium">Norte:</span> ${cedula.linderos.norte} ${cedula.linderos.mt2_norte ? `(${cedula.linderos.mt2_norte} m²)` : ''}</div>` : ''}
-                            ${cedula.linderos.sur ? `<div><span class="font-medium">Sur:</span> ${cedula.linderos.sur} ${cedula.linderos.mt2_sur ? `(${cedula.linderos.mt2_sur} m²)` : ''}</div>` : ''}
-                            ${cedula.linderos.este ? `<div><span class="font-medium">Este:</span> ${cedula.linderos.este} ${cedula.linderos.mt2_este ? `(${cedula.linderos.mt2_este} m²)` : ''}</div>` : ''}
-                            ${cedula.linderos.oeste ? `<div><span class="font-medium">Oeste:</span> ${cedula.linderos.oeste} ${cedula.linderos.mt2_oeste ? `(${cedula.linderos.mt2_oeste} m²)` : ''}</div>` : ''}
-                        </div>
-                        ${cedula.linderos.mt2_total ? `<div class="mt-3 text-sm"><span class="font-medium">Total:</span> ${cedula.linderos.mt2_total} m²</div>` : ''}
-                    </div>
-                    ` : ''}
+                                            <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                                                <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Linderos</h3>
+                                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                                    ${cedula.linderos.norte ? `<div><span class="font-medium">Norte:</span> ${cedula.linderos.norte} ${cedula.linderos.mt2_norte ? `(${cedula.linderos.mt2_norte} m²)` : ''}</div>` : ''}
+                                                    ${cedula.linderos.sur ? `<div><span class="font-medium">Sur:</span> ${cedula.linderos.sur} ${cedula.linderos.mt2_sur ? `(${cedula.linderos.mt2_sur} m²)` : ''}</div>` : ''}
+                                                    ${cedula.linderos.este ? `<div><span class="font-medium">Este:</span> ${cedula.linderos.este} ${cedula.linderos.mt2_este ? `(${cedula.linderos.mt2_este} m²)` : ''}</div>` : ''}
+                                                    ${cedula.linderos.oeste ? `<div><span class="font-medium">Oeste:</span> ${cedula.linderos.oeste} ${cedula.linderos.mt2_oeste ? `(${cedula.linderos.mt2_oeste} m²)` : ''}</div>` : ''}
+                                                </div>
+                                                ${cedula.linderos.mt2_total ? `<div class="mt-3 text-sm"><span class="font-medium">Total:</span> ${cedula.linderos.mt2_total} m²</div>` : ''}
+                                            </div>
+                                            ` : ''}
 
             <!-- Documento Legal -->
             ${cedula.documento_legal ? `
-                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Documento Legal</h3>
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            <div><span class="font-medium">Tipo:</span> ${cedula.documento_legal.tipo}</div>
-                            ${cedula.documento_legal.numero ? `<div><span class="font-medium">Número:</span> ${cedula.documento_legal.numero}</div>` : ''}
-                            ${cedula.documento_legal.matricula ? `<div><span class="font-medium">Matrícula:</span> ${cedula.documento_legal.matricula}</div>` : ''}
-                            ${cedula.documento_legal.folio ? `<div><span class="font-medium">Folio:</span> ${cedula.documento_legal.folio}</div>` : ''}
-                            ${cedula.documento_legal.fecha ? `<div><span class="font-medium">Fecha:</span> ${new Date(cedula.documento_legal.fecha).toLocaleDateString('es-ES')}</div>` : ''}
-                        </div>
-                        ${cedula.documento_legal.descripcion ? `<div class="mt-3 text-sm"><span class="font-medium">Descripción:</span> ${cedula.documento_legal.descripcion}</div>` : ''}
-                    </div>
-                    ` : ''}
+                                            <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                                                <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Documento Legal</h3>
+                                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                                    <div><span class="font-medium">Tipo:</span> ${cedula.documento_legal.tipo}</div>
+                                                    ${cedula.documento_legal.numero ? `<div><span class="font-medium">Número:</span> ${cedula.documento_legal.numero}</div>` : ''}
+                                                    ${cedula.documento_legal.matricula ? `<div><span class="font-medium">Matrícula:</span> ${cedula.documento_legal.matricula}</div>` : ''}
+                                                    ${cedula.documento_legal.folio ? `<div><span class="font-medium">Folio:</span> ${cedula.documento_legal.folio}</div>` : ''}
+                                                    ${cedula.documento_legal.fecha ? `<div><span class="font-medium">Fecha:</span> ${new Date(cedula.documento_legal.fecha).toLocaleDateString('es-ES')}</div>` : ''}
+                                                </div>
+                                                ${cedula.documento_legal.descripcion ? `<div class="mt-3 text-sm"><span class="font-medium">Descripción:</span> ${cedula.documento_legal.descripcion}</div>` : ''}
+                                            </div>
+                                            ` : ''}
                 </div>
             `;
 

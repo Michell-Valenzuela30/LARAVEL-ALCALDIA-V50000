@@ -114,12 +114,13 @@ class CedulaCatastralController extends Controller
                 $nuevoDocumentoLegalId = $nuevoDocumentoLegal->id;
             }
 
-            // Generar nuevo número de cédula
-            $nuevoNumeroCedula = $this->generarNuevoNumeroCedula($cedulaOriginal->numero_cedula);
+            // Generar nuevo número de cédula correlativo
+            $nuevoNumeroCedula = $this->generarNumeroCedulaAutomatico();
 
             // Crear nueva cédula catastral
             $nuevaCedula = CedulaCatastral::create([
                 'numero_cedula' => $nuevoNumeroCedula,
+                'numero_base' => $cedulaOriginal->numero_base, // Mantener el número base original para agrupar
                 'numero_expediente' => $cedulaOriginal->numero_expediente . '-R', // Agregamos -R para indicar renovación
                 'propietario_id' => $cedulaOriginal->propietario_id,
                 'direccion_inmueble' => $cedulaOriginal->direccion_inmueble,
@@ -157,19 +158,6 @@ class CedulaCatastralController extends Controller
         // Si es el cuarto trimestre, vuelve al primero
         return $trimestres[($indiceActual + 1) % 4];
     }
-
-    private function generarNuevoNumeroCedula($numeroCedulaAnterior)
-    {
-        // Extraer el número base y agregar un sufijo o incrementar
-        $contador = 1;
-        do {
-            $nuevoNumero = $numeroCedulaAnterior . '-' . str_pad($contador, 2, '0', STR_PAD_LEFT);
-            $existe = CedulaCatastral::where('numero_cedula', $nuevoNumero)->exists();
-            $contador++;
-        } while ($existe);
-
-        return $nuevoNumero;
-    }
     /**
      * Devuelve datos para DataTables
      */
@@ -200,7 +188,7 @@ class CedulaCatastralController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'propietario_id' => 'required|exists:propietarios,id',
-            'numero_cedula' => 'required|string|max:50|unique:cedulas_catastrales,numero_cedula,' . $request->id,
+            // ELIMINAR esta línea: 'numero_cedula' => 'required|string|max:50|unique:cedulas_catastrales,numero_cedula,' . $request->id,
             'numero_expediente' => 'required|string|max:50|unique:cedulas_catastrales,numero_expediente,' . $request->id,
             'direccion_inmueble' => 'required|string',
             'tipo_inmueble' => 'required|in:Terreno,Casa,Local,Galpon',
@@ -278,11 +266,22 @@ class CedulaCatastralController extends Controller
                 $documentoLegalId = $documentoLegal->id;
             }
 
+            // Generar número de cédula automático
+            if ($request->id) {
+                // Actualización - mantener el número existente
+                $cedulaCatastral = CedulaCatastral::findOrFail($request->id);
+                $numeroCedula = $cedulaCatastral->numero_cedula;
+                $numeroBase = $cedulaCatastral->numero_base;
+            } else {
+                // Creación - generar nuevo número
+                $numeroCedula = $this->generarNumeroCedulaAutomatico();
+                $numeroBase = $numeroCedula; // Para nuevas cédulas, el número base es el mismo
+            }
+
             // Crear o actualizar cédula catastral
             if ($request->id) {
-                $cedulaCatastral = CedulaCatastral::findOrFail($request->id);
                 $cedulaCatastral->update([
-                    'numero_cedula' => $request->numero_cedula,
+                    // No actualizamos numero_cedula ni numero_base en edición
                     'numero_expediente' => $request->numero_expediente,
                     'propietario_id' => $propietario->id,
                     'direccion_inmueble' => $request->direccion_inmueble,
@@ -297,7 +296,8 @@ class CedulaCatastralController extends Controller
                 ]);
             } else {
                 $cedulaCatastral = CedulaCatastral::create([
-                    'numero_cedula' => $request->numero_cedula,
+                    'numero_cedula' => $numeroCedula,
+                    'numero_base' => $numeroBase,
                     'numero_expediente' => $request->numero_expediente,
                     'propietario_id' => $propietario->id,
                     'direccion_inmueble' => $request->direccion_inmueble,
@@ -411,16 +411,9 @@ class CedulaCatastralController extends Controller
      */
     public function getHistorial($numeroCedulaBase)
     {
-        // Extraer el número base de la cédula
-        $numeroBase = strpos($numeroCedulaBase, '-') !== false
-            ? substr($numeroCedulaBase, 0, strpos($numeroCedulaBase, '-'))
-            : $numeroCedulaBase;
-
+        // Buscar por numero_base en lugar de hacer substr
         $historial = CedulaCatastral::with(['propietario', 'linderos', 'documentoLegal'])
-            ->where(function ($query) use ($numeroBase) {
-                $query->where('numero_cedula', $numeroBase)
-                    ->orWhere('numero_cedula', 'like', $numeroBase . '-%');
-            })
+            ->where('numero_base', $numeroCedulaBase)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -428,5 +421,20 @@ class CedulaCatastralController extends Controller
             'success' => true,
             'historial' => $historial
         ]);
+    }
+    private function generarNumeroCedulaAutomatico()
+    {
+        // Obtener el último número de cédula
+        $ultimaCedula = CedulaCatastral::orderBy('numero_cedula', 'desc')->first();
+
+        if (!$ultimaCedula) {
+            return '0001';
+        }
+
+        // Extraer el número más alto (considerando que puede tener formato 0001 o números más altos)
+        $ultimoNumero = (int) $ultimaCedula->numero_cedula;
+        $nuevoNumero = $ultimoNumero + 1;
+
+        return str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
     }
 }
